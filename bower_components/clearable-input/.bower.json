@@ -1,0 +1,14 @@
+{
+  "name": "clearable-input",
+  "homepage": "https://github.com/xRapidDavex/clearable-input",
+  "_release": "570aa79ff1",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "570aa79ff11bddad161b728efaa5452a910c8a1a"
+  },
+  "_source": "git@github.com:xRapidDavex/clearable-input.git",
+  "_target": "*",
+  "_originalSource": "git@github.com:xRapidDavex/clearable-input.git",
+  "_direct": true
+}

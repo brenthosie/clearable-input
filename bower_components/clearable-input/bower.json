@@ -1,5 +1,6 @@
 {
   "name": "clearable-input",
+  "version": "0.0.0",
   "homepage": "https://github.com/xRapidDavex/clearable-input",
   "authors": [
     "Brent Hosie <brenthosie@gmail.com>",
@@ -18,14 +19,5 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^0.5"
-  },
-  "_release": "383632138d",
-  "_resolution": {
-    "type": "branch",
-    "branch": "master",
-    "commit": "383632138ded6024e4d53ec7b2c35f9912519efc"
-  },
-  "_source": "git@github.com:xRapidDavex/clearable-input.git",
-  "_target": "*",
-  "_originalSource": "git@github.com:xRapidDavex/clearable-input.git"
+  }
 }

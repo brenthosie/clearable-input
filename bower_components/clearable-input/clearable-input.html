@@ -1,0 +1,74 @@
+<!--
+`clearable-input` is a Polymer element that encapsulates the idea of a text input that has a clickable icon inside the element to clear the input.
+
+<clearable-input></clearable-input>
+
+@author Brent Hosie
+@author Garrett Nay
+@element clearable-input
+@homepage http://github.com/xrapiddavex/clearable-input/
+-->
+
+<link rel="import" href="../polymer/polymer.html"/>
+
+<polymer-element name="clearable-input" attributes="placeholder value readonly backgroundColor">
+	<template>
+		<style>
+			div{
+				border:1px solid silver;
+				display: inline-block;
+			}
+			input {
+				float: left;
+				border: none;
+			}
+			input:focus, button:focus{
+				outline:transparent;
+			}
+			button {
+				cursor: pointer;
+				border: none;
+				padding: 0 2px 0 0;
+				margin: 0;
+				background: #fff;
+				position: relative;
+				font-weight: bold;
+				opacity: 0;
+			}
+		</style>
+		<div>
+			<input type="text" id="textInput" placeholder="{{placeholder}}" background-color="{{backgroundColor}}" value="{{value}}" on-keyUp="{{keyup}}"/>
+			<button id="clearInput" on-click="{{clearInput}}">&#10005;</button>
+		</div>
+	</template>
+	<script>
+		(function() {
+			"use strict";			
+
+			var determineButtonState = function() {
+				// when length 0, opacity is 0
+				this.$.clearInput.style.opacity = (this.$.textInput.value.length !== 0 ? 1 : 0);
+			};
+
+			Polymer({
+				ready: function() {
+					this.$.textInput.readOnly = (this.readonly !== void 0);
+					this.$.textInput.style.backgroundColor = this.readonlyBGColor;
+				},
+
+				keyup: function() {
+					determineButtonState.call(this);
+				},
+
+				textInputChanged: function() {
+					this.keyup();
+				},
+
+				clearInput: function() {
+					this.$.textInput.value = '';
+					this.keyup();
+				}
+			});
+		})();
+	</script>
+</polymer-element>

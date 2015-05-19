@@ -1,2 +1,1 @@
-# clearable-input
-clearable-input is a Polymer element that encapsulates the idea of a text input that has a clickable icon inside the element to clear the input.
+See the [component page](http://xrapiddavex.github.io/clearable-input/bower_components/clearable-input/) for more information.

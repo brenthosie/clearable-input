@@ -11,35 +11,25 @@
 
 <link rel="import" href="../polymer/polymer.html"/>
 
-<polymer-element name="clearable-input" attributes="placeholder value readonly backgroundColor">
+<polymer-element name="clearable-input" attributes="placeholder value readonly disabled backgroundColor color">
 	<template>
 		<style>
-			div{
-				border:1px solid silver;
-				display: inline-block;
-			}
-			input {
-				float: left;
-				border: none;
-			}
-			input:focus, button:focus{
-				outline:transparent;
-			}
-			button {
-				cursor: pointer;
-				border: none;
-				padding: 0 2px 0 0;
-				margin: 0;
-				background: #fff;
-				position: relative;
-				font-weight: bold;
-				opacity: 0;
-			}
+			span.wrapper {
+                position: relative;
+            }
+            span.wrapper span {
+                position: absolute;
+                display: block;
+                right: 5px;
+                top: 0px;                
+                cursor: pointer;
+                opacity: 0;
+            }
 		</style>
-		<div>
-			<input type="text" id="textInput" placeholder="{{placeholder}}" background-color="{{backgroundColor}}" value="{{value}}" on-keyUp="{{keyup}}"/>
-			<button id="clearInput" on-click="{{clearInput}}">&#10005;</button>
-		</div>
+		<span class="wrapper">
+            <input type="text" id="textInput" placeholder="{{placeholder}}" style="background-color:{{backgroundColor}};color:{{color}};" value="{{value}}" on-change="{{valueChanged}}" on-keydown="{{valueChanged}}" on-cut="{{valueChanged}}" on-paste="{{valueChanged}}"/>
+            <span id="clearInput" on-click="{{testClearInput}}">&#10005;</span>
+        </span>
 	</template>
 	<script>
 		(function() {
@@ -47,26 +37,45 @@
 
 			var determineButtonState = function() {
 				// when length 0, opacity is 0
-				this.$.clearInput.style.opacity = (this.$.textInput.value.length !== 0 ? 1 : 0);
+				this.$.clearInput.style.opacity = (this.$.textInput.value.length !== 0 && this.disabled === void 0 ? 1 : 0);
+				
+				if(this.disabled === void 0) {
+					this.$.clearInput.style.cursor = 'pointer';
+				} else {
+					this.$.clearInput.style.cursor = 'default';
+				}
 			};
 
 			Polymer({
+				value: '',
+				backgroundColor: '#FFF',
+				color: '#000',
+
 				ready: function() {
 					this.$.textInput.readOnly = (this.readonly !== void 0);
+					this.$.textInput.disabled = (this.disabled !== void 0);
 					this.$.textInput.style.backgroundColor = this.readonlyBGColor;
 				},
 
-				keyup: function() {
-					determineButtonState.call(this);
-				},
+				testClearInput: function() {
+					if(this.disabled === void 0) {
+						this.clearInput();
+						return true;
+					}
 
-				textInputChanged: function() {
-					this.keyup();
+					return false;
 				},
 
 				clearInput: function() {
-					this.$.textInput.value = '';
-					this.keyup();
+					this.value='';
+					return true;
+				},
+
+				valueChanged: function() {
+					// need this to deal with programmatic setting.
+					setTimeout(function() {
+						determineButtonState.call(this);
+					}.bind(this), 0);
 				}
 			});
 		})();

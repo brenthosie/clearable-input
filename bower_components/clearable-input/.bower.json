@@ -2,8 +2,7 @@
   "name": "clearable-input",
   "homepage": "https://github.com/xRapidDavex/clearable-input",
   "authors": [
-    "Brent Hosie <brenthosie@gmail.com>",
-    "Garrett Nay <nay.garrett@gmail.com"
+    "Brent Hosie <brenthosie@gmail.com>"
   ],
   "description": "clearable-input is a Polymer element that encapsulates the idea of a text input that has a clickable icon inside the element to clear the input.",
   "main": "clearable-input.html",
@@ -19,13 +18,13 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^0.5"
   },
-  "_release": "383632138d",
+  "_release": "296579e95b",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "383632138ded6024e4d53ec7b2c35f9912519efc"
+    "commit": "296579e95b426eaa5da54ce429ef55fbea8c6a86"
   },
-  "_source": "git@github.com:xRapidDavex/clearable-input.git",
+  "_source": "git@github.com:xrapiddavex/clearable-input.git",
   "_target": "*",
-  "_originalSource": "git@github.com:xRapidDavex/clearable-input.git"
+  "_originalSource": "git@github.com:xrapiddavex/clearable-input.git"
 }

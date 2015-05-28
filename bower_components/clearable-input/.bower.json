@@ -25,7 +25,8 @@
     "tag": "v0.1.0",
     "commit": "a86ec986549f01477fbc926473462bacfe740502"
   },
-  "_source": "git@github.com:xrapiddavex/clearable-input.git",
-  "_target": "*",
-  "_originalSource": "git@github.com:xrapiddavex/clearable-input.git"
+  "_source": "git@github.com:xRapidDavex/clearable-input.git",
+  "_target": "~0.1.0",
+  "_originalSource": "git@github.com:xRapidDavex/clearable-input.git",
+  "_direct": true
 }

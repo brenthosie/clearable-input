@@ -9,41 +9,38 @@
 -->
 
 <link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../core-icons/core-icons.html">
 
-<polymer-element name="clearable-input" attributes="placeholder value readonly disabled backgroundColor color">
+<polymer-element name="clearable-input" attributes="placeholder value readonly disabled backgroundColor color icon">
 	<template>
 		<style>
 			span.wrapper {
                 position: relative;
             }
-            span.wrapper span {
+            #iconWrapper {
                 position: absolute;
                 display: block;
                 right: 5px;
                 top: 0px;                
                 cursor: pointer;
-                opacity: 0;
+                width: 12px;
+                height: 12px;
+            }
+            #iconWrapper core-icon {
+            	width: 12px;
+            	height: 12px;
             }
 		</style>
 		<span class="wrapper">
             <input type="text" id="textInput" placeholder="{{placeholder}}" value="{{value}}" on-click="{{fireClicked}}" on-change="{{valueChanged}}" on-keydown="{{valueChanged}}" on-cut="{{valueChanged}}" on-paste="{{valueChanged}}"/>
-            <span id="clearInput" on-click="{{testClearInput}}" style="color:{{color}};">&#10005;</span>
+            <div id="iconWrapper">
+            	<core-icon id="clearInput" icon="{{icon}}" on-click="{{testClearInput}}" hidden?="{{clearHidden}}"></core-icon>
+            <div>
         </span>
 	</template>
 	<script>
 		(function() {
-			"use strict";			
-
-			var determineButtonState = function() {
-				// when length 0, opacity is 0
-				this.$.clearInput.style.opacity = (this.$.textInput.value.length !== 0 && this.disabled === void 0 ? 1 : 0);
-				
-				if(this.disabled === void 0) {
-					this.$.clearInput.style.cursor = 'pointer';
-				} else {
-					this.$.clearInput.style.cursor = 'default';
-				}
-			};
+			"use strict";
 
 			Polymer({
 				/**
@@ -84,6 +81,15 @@
 	            * @default '#000'
 	            */
 				color: '#000',
+				/**
+	            * Whether or not to show the clear input
+	            *
+	            * attribute clearHidden
+	            * access public
+	            * type boolean
+	            * default true
+	            */
+				clearHidden: true,
 
 				/**
 				* On Polymer ready, set defaults
@@ -108,6 +114,23 @@
 		            * @default undefined
 		            */
 					this.$.textInput.disabled = (this.disabled !== void 0);
+					/**
+		            * The core-icon that's used for clearing the input text
+		            *
+		            * @attribute icon
+		            * @access public
+		            * @type string
+		            * @default 'clear'
+		            */
+					if(typeof this.icon !== 'string' || this.icon.length === 0) {
+						this.icon = "clear";
+					}
+
+					setInterval(function() {
+						this.clearHidden = this.$.textInput.value.length === 0 || this.disabled !== void 0;
+					}.bind(this), 100);
+
+
 				},
 
 				/**
@@ -153,16 +176,12 @@
 				* @returns undefined
 				*/
 				valueChanged: function() {
-					// need this to deal with programmatic setting.
-					setTimeout(function() {
-						determineButtonState.call(this);
-						/**
-	                    * Fires when the the value of the text input is changed
-	                    *
-	                    * @event change
-	                    */
-						this.fire('change');
-					}.bind(this), 0);
+					/**
+                    * Fires when the the value of the text input is changed
+                    *
+                    * @event change
+                    */
+					this.fire('change');
 				},
 
 				/**

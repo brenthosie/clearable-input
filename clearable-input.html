@@ -11,7 +11,7 @@
 <link rel="import" href="../polymer/polymer.html"/>
 <link rel="import" href="../core-icons/core-icons.html">
 
-<polymer-element name="clearable-input" attributes="placeholder value readonly disabled backgroundColor color icon">
+<polymer-element name="clearable-input" attributes="placeholder value readonly isDisabled backgroundColor color icon">
 	<template>
 		<style>
 			span.wrapper {
@@ -106,14 +106,14 @@
 					this.$.textInput.readOnly = (this.readonly !== void 0);
 					/**
 		            * If set on the element, makes the text input disabled. The text input will not be clearable.
-		            * Disabled overrides readonly.
+		            * isDisabled overrides readonly.
 		            *
-		            * @attribute disabled
+		            * @attribute isDisabled
 		            * @access public
 		            * @type boolean
 		            * @default undefined
 		            */
-					this.$.textInput.disabled = (this.disabled !== void 0);
+					this.$.textInput.disabled = (this.isDisabled !== void 0);
 					/**
 		            * The core-icon that's used for clearing the input text
 		            *
@@ -127,7 +127,7 @@
 					}
 
 					setInterval(function() {
-						this.clearHidden = this.$.textInput.value.length === 0 || this.disabled !== void 0;
+						this.clearHidden = this.$.textInput.value.length === 0 || this.isDisabled !== void 0;
 					}.bind(this), 100);
 
 
@@ -135,14 +135,14 @@
 
 				/**
 				* Tests whether or not clicking on the clear button should clear the value.
-				* Returns true if the disabled attribute is not set, false otherwise.
+				* Returns true if the isDisabled attribute is not set, false otherwise.
 				*
 				* function testClearInput
 				* access public
 				* returns boolean
 				*/
 				testClearInput: function() {
-					if(this.disabled === void 0) {
+					if(this.isDisabled === void 0) {
 						this.clearInput();
 						return true;
 					}

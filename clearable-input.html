@@ -9,32 +9,15 @@
 -->
 
 <link rel="import" href="../polymer/polymer.html"/>
-<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
 
-<polymer-element name="clearable-input" attributes="placeholder value readonly isDisabled backgroundColor color icon">
-	<template>
-		<style>
-			span.wrapper {
-                position: relative;
-            }
-            #iconWrapper {
-                position: absolute;
-                display: block;
-                right: 5px;
-                top: 0px;                
-                cursor: pointer;
-                width: 12px;
-                height: 12px;
-            }
-            #iconWrapper core-icon {
-            	width: 12px;
-            	height: 12px;
-            }
-		</style>
+<dom-module id="clearable-input">
+	<link rel="stylesheet" type="text/css" href="./clearable-input.css"/>
+	<template>		
 		<span class="wrapper">
-            <input type="text" id="textInput" placeholder="{{placeholder}}" value="{{value}}" on-click="{{fireClicked}}" on-change="{{valueChanged}}" on-keydown="{{valueChanged}}" on-cut="{{valueChanged}}" on-paste="{{valueChanged}}"/>
+            <input type="text" id="textInput" placeholder="{{placeholder}}" value="{{value}}" on-click="fireClicked" on-input="valueChanged"/>
             <div id="iconWrapper">
-            	<core-icon id="clearInput" icon="{{icon}}" on-click="{{testClearInput}}" hidden?="{{clearHidden}}"></core-icon>
+            	<iron-icon id="clearInput" icon="{{icon}}" on-click="testClearInput" hidden$="{{clearHidden}}"></iron-icon>
             <div>
         </span>
 	</template>
@@ -43,6 +26,51 @@
 			"use strict";
 
 			Polymer({
+				is: "clearable-input",
+
+				properties: {
+					placeholder: {
+						type: String,
+						value: "",
+						notify: true
+					},
+					value: {
+						type: String,
+						value: "",
+						observer: "valueChanged",
+						notify: true
+					},
+					readonly: {
+						type: Boolean,
+						value: false,
+						notify: true
+					},
+					isDisabled: {
+						type: Boolean,
+						value: false,
+						notify: true
+					},
+					backgroundColor: {
+						type: String,
+						value: "#FFF",
+						notify: true
+					},
+					color: {
+						type: String,
+						value: "#000",
+						notify: true
+					},
+					icon: {
+						type: String,
+						value: "clear",
+						notify: true
+					},
+					clearHidden: {
+						type: Boolean,
+						value: true,
+						notify: true
+					}
+				},
 				/**
 	            * The placeholder of the text input
 	            *
@@ -51,7 +79,7 @@
 	            * @type string
 	            * @default ''
 	            */
-				placeholder: '',
+
 				/**
 	            * The value of the text input
 	            *
@@ -60,7 +88,7 @@
 	            * @type string
 	            * @default ''
 	            */
-				value: '',
+
 				/**
 	            * The background color of the text input. This field supports
 	            * hexidecimal and standard html colors.
@@ -70,7 +98,7 @@
 	            * @type string
 	            * @default '#FFF'
 	            */
-				backgroundColor: '#FFF',
+
 				/**
 	            * The color of the text input's text, and text input's clear button.
 	            * This field supports hexidecimal and standard html colors.
@@ -80,7 +108,7 @@
 	            * @type string
 	            * @default '#000'
 	            */
-				color: '#000',
+
 				/**
 	            * Whether or not to show the clear input
 	            *
@@ -89,7 +117,7 @@
 	            * type boolean
 	            * default true
 	            */
-				clearHidden: true,
+				
 
 				/**
 				* On Polymer ready, set defaults
@@ -103,7 +131,7 @@
 		            * @type boolean
 		            * @default undefined
 		            */
-					this.$.textInput.readOnly = (this.readonly !== void 0);
+					// this.$.textInput.readOnly = (this.readonly !== void 0);
 					/**
 		            * If set on the element, makes the text input disabled. The text input will not be clearable.
 		            * isDisabled overrides readonly.
@@ -113,22 +141,22 @@
 		            * @type boolean
 		            * @default undefined
 		            */
-					this.$.textInput.disabled = (this.isDisabled !== void 0);
+					// this.$.textInput.disabled = (this.isDisabled !== void 0);
 					/**
-		            * The core-icon that's used for clearing the input text
+		            * The iron-icon that's used for clearing the input text
 		            *
 		            * @attribute icon
 		            * @access public
 		            * @type string
 		            * @default 'clear'
 		            */
-					if(typeof this.icon !== 'string' || this.icon.length === 0) {
-						this.icon = "clear";
-					}
+					// if(typeof this.icon !== 'string' || this.icon.length === 0) {
+					// 	this.icon = "clear";
+					// }
 
-					setInterval(function() {
-						this.clearHidden = this.$.textInput.value.length === 0 || this.isDisabled !== void 0;
-					}.bind(this), 100);
+					// setInterval(function() {
+					// 	this.clearHidden = this.$.textInput.value.length === 0 || this.isDisabled !== void 0;
+					// }.bind(this), 100);
 
 
 				},
@@ -198,9 +226,9 @@
                     *
                     * @event inputclicked
                     */
-					this.fire('inputclicked')
+					this.fire('inputclicked');
 				}
 			});
 		})();
 	</script>
-</polymer-element>
+</dom-element>

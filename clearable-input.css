@@ -1,0 +1,16 @@
+span.wrapper {
+    position: relative;
+}
+#iconWrapper {
+    position: absolute;
+    display: block;
+    right: 5px;
+    top: 0px;                
+    cursor: pointer;
+    width: 12px;
+    height: 12px;
+}
+#iconWrapper core-icon {
+	width: 12px;
+	height: 12px;
+}

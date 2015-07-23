@@ -9,33 +9,17 @@
 -->
 
 <link rel="import" href="../polymer/polymer.html"/>
-<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
 
-<polymer-element name="clearable-input" attributes="placeholder value readonly isdisabled backgroundColor color icon">
-	<template>
-		<style>
-			span.wrapper {
-                position: relative;
-            }
-            #iconWrapper {
-                position: absolute;
-                display: block;
-                right: 5px;
-                top: 0px;                
-                cursor: pointer;
-                width: 12px;
-                height: 12px;
-            }
-            #iconWrapper core-icon {
-            	width: 12px;
-            	height: 12px;
-            }
-		</style>
+<dom-module id="clearable-input">
+	<link rel="import" type="css" href="./clearable-input.css"/>
+	
+	<template>		
 		<span class="wrapper">
-            <input type="text" id="textInput" placeholder="{{placeholder}}" value="{{value}}" on-click="{{fireClicked}}" on-change="{{valueChanged}}" on-keydown="{{valueChanged}}" on-cut="{{valueChanged}}" on-paste="{{valueChanged}}"/>
-            <div id="iconWrapper">
-            	<core-icon id="clearInput" icon="{{icon}}" on-click="{{testClearInput}}" hidden?="{{clearHidden}}"></core-icon>
-            </div>
+            <input type="text" id="textInput" placeholder="{{placeholder}}" value="{{value::input}}" on-click="fireClicked" on-input="_valueChanged"/>
+            <div id="iconWrapper" hidden$="{{_isClearHidden}}">
+            	<iron-icon id="clearInput" icon="{{icon}}" on-click="_testClearInput"></iron-icon>
+            <div>
         </span>
 	</template>
 	<script>
@@ -43,106 +27,103 @@
 			"use strict";
 
 			Polymer({
-				/**
-	            * The placeholder of the text input
-	            *
-	            * @attribute placeholder
-	            * @access public
-	            * @type string
-	            * @default ''
-	            */
-				placeholder: '',
-				/**
-	            * The value of the text input
-	            *
-	            * @attribute value
-	            * @access public
-	            * @type string
-	            * @default ''
-	            */
-				value: '',
-				/**
-	            * The background color of the text input. This field supports
-	            * hexidecimal and standard html colors.
-	            *
-	            * @attribute backgroundColor
-	            * @access public
-	            * @type string
-	            * @default '#FFF'
-	            */
-				backgroundColor: '#FFF',
-				/**
-	            * The color of the text input's text, and text input's clear button.
-	            * This field supports hexidecimal and standard html colors.
-	            *
-	            * @attribute color
-	            * @access public
-	            * @type string
-	            * @default '#000'
-	            */
-				color: '#000',
-				/**
-	            * Whether or not to show the clear input
-	            *
-	            * attribute clearHidden
-	            * access public
-	            * type boolean
-	            * default true
-	            */
-				clearHidden: true,
+				is: "clearable-input",
 
-				/**
-				* On Polymer ready, set defaults
-				*/
-				ready: function() {
+				properties: {
+					/**
+		            * The placeholder of the text input
+		            *
+		            * @attribute placeholder
+		            * @access public
+		            * @type string
+		            * @default ''
+		            */
+					placeholder: {
+						type: String,
+						value: "",
+						notify: true
+					},
+					/**
+		            * The value of the text input
+		            *
+		            * @attribute value
+		            * @access public
+		            * @type string
+		            * @default ''
+		            */
+					value: {
+						type: String,
+						value: "",
+						observer: "_valueChanged",
+						notify: true
+					},
 					/**
 		            * If set on the element, makes the text input readonly. The text input is still clearable.
 		            *
-		            * @attribute readonly
+		            * @attribute isReadOnly
 		            * @access public
 		            * @type boolean
 		            * @default undefined
 		            */
-					this.$.textInput.readOnly = (this.readonly !== void 0);
+					isReadOnly: {
+						type: Boolean,
+						value: void 0,
+					},
 					/**
 		            * If set on the element, makes the text input disabled. The text input will not be clearable.
-		            * isDisabled overrides readonly.
+		            * isDisabled overrides isReadOnly.
 		            *
 		            * @attribute isDisabled
 		            * @access public
 		            * @type boolean
 		            * @default undefined
 		            */
-					this.$.textInput.disabled = (this.isdisabled !== void 0);
+					isDisabled: {
+						type: Boolean,
+						value: void 0,
+					},
 					/**
-		            * The core-icon that's used for clearing the input text
+		            * The iron-icon that's used for clearing the input text
 		            *
 		            * @attribute icon
 		            * @access public
 		            * @type string
 		            * @default 'clear'
 		            */
-					if(typeof this.icon !== 'string' || this.icon.length === 0) {
-						this.icon = "clear";
-					}
-
-					setInterval(function() {
-						this.clearHidden = this.$.textInput.value.length === 0 || this.isdisabled !== void 0;
-					}.bind(this), 100);
-
-
+					icon: {
+						type: String,
+						value: "clear",
+						notify: true
+					},
+					/**
+		            * Whether or not to show the clear input
+		            *
+		            * attribute _isClearHidden
+		            * access public
+		            * type boolean
+		            * default true
+		            */
+					_isClearHidden: false
+				},
+				
+				/**
+				* On Polymer ready, set defaults
+				*/
+				ready: function() {
+					this._resolveDisabledUI();
+					this._resolveReadOnlyUI();
 				},
 
 				/**
 				* Tests whether or not clicking on the clear button should clear the value.
 				* Returns true if the isDisabled attribute is not set, false otherwise.
 				*
-				* function testClearInput
-				* access public
+				* function _testClearInput
+				* access private
 				* returns boolean
 				*/
-				testClearInput: function() {
-					if(this.isdisabled === void 0) {
+				_testClearInput: function() {
+					if(this.isDisabled === void 0) {
 						this.clearInput();
 						return true;
 					}
@@ -171,17 +152,103 @@
 				/**
 				* Is called when the value of the text input changes
 				*
-				* @method valueChanged
-				* @access public
-				* @returns undefined
+				* method _valueChanged
+				* access private
+				* returns undefined
 				*/
-				valueChanged: function() {
+				_valueChanged: function() {
+					this._resolveClearHiddenUI();
+
 					/**
                     * Fires when the the value of the text input is changed
                     *
                     * @event change
                     */
 					this.fire('change');
+				},
+
+				/**
+				* Sets the input as is-disabled (non-clearable)
+				*
+				* @method setAsDisabled
+				* @access public
+				* @returns undefined
+				*/
+				setAsDisabled: function() {
+					this.isDisabled = true;
+					this._resolveDisabledUI();
+				},
+
+				/**
+				* Sets the input as is-read-only (clearable, non-editable)
+				*
+				* @method setAsReadOnly
+				* @access public
+				* @returns undefined
+				*/
+				setAsReadOnly: function() {
+					this.isReadOnly = true;
+					this._resolveReadOnlyUI();
+				},				
+
+				/**
+				* Fully enables the input, removing any restrictions
+				*
+				* @method enable
+				* @access public
+				* @returns undefined
+				*/
+				enable: function() {
+					this.isDisabled = void 0;
+					this.isReadOnly = void 0;
+					this._resolveDisabledUI();
+					this._resolveReadOnlyUI();
+				},
+
+				/**
+				* Adds/removes the disabled flag from the textInput based
+				* on the value of isDisabled
+				*
+				* method _resolveDisabledUI
+				* access private
+				* returns undefined
+				*/
+				_resolveDisabledUI: function() {
+					this.$.textInput.removeAttribute('disabled');
+					
+					if (this.isDisabled !== void 0) {
+						this.$.textInput.setAttribute('disabled', true);
+					}
+
+					this._resolveClearHiddenUI();
+				},
+
+				/**
+				* Adds/removes the readonly flag from the textInput based
+				* on the value of isReadOnly
+				*
+				* method _resolveReadOnlyUI
+				* access private
+				* returns undefined
+				*/
+				_resolveReadOnlyUI: function() {
+					this.$.textInput.removeAttribute('readonly');
+					
+					if (this.isReadOnly !== void 0) {
+						this.$.textInput.setAttribute('readonly', true);
+					}
+				},
+
+				/**
+				* Sets _isClearHidden to true if the textInput is disabled, or
+				* the textInput contains no value
+				*
+				* method _resolveClearHiddenUI
+				* access private
+				* returns undefined
+				*/
+				_resolveClearHiddenUI: function()  {
+					this._isClearHidden = this.value.length === 0 || this.isDisabled !== void 0;
 				},
 
 				/**
@@ -198,9 +265,9 @@
                     *
                     * @event inputclicked
                     */
-					this.fire('inputclicked')
+					this.fire('inputclicked');
 				}
 			});
 		})();
 	</script>
-</polymer-element>
+</dom-element>

@@ -3,10 +3,10 @@
 <head>
   <meta charset='utf-8'>
   <title>clearable-input</title>
-    <script src="../webcomponentsjs/webcomponents.js"></script>
+    <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="clearable-input.html">
 </head>
-<style>
+<style is="custom-style">
 	div {
 		border: 1px solid black;
 		margin-bottom: 10px;
@@ -28,17 +28,12 @@
 
 <div>
 	<p>Read Only input with a value</p>
-	<clearable-input placeholder="Hello World" value="Foo" readonly></clearable-input>
+	<clearable-input placeholder="Hello World" value="Foo" is-read-only></clearable-input>
 </div>
 
 <div>
 	<p>Disabled input</p>
-	<clearable-input placeholder="Hello World" value="Foo" isDisabled></clearable-input>
-</div>
-
-<div>
-	<p>Custom Colors</p>
-	<clearable-input placeholder="Hello World" value="Foo" backgroundColor="#000" color="white"></clearable-input>
+	<clearable-input placeholder="Hello World" value="Foo" is-disabled></clearable-input>
 </div>
 </body>
 <script>

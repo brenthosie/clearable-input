@@ -1,0 +1,21 @@
+:host span.wrapper {
+    position: relative;
+}
+:host #iconWrapper {
+    /*position: absolute;
+    display: block;
+    right: 5px;
+    top: 0px; */
+
+
+    position:absolute;
+    cursor: pointer;
+    width: 12px;
+    height: 12px;
+    top: 0px;
+    right: 5px;
+}
+:host #iconWrapper iron-icon {
+	width: 12px;
+	height: 12px;
+}

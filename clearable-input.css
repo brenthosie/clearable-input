@@ -6,16 +6,16 @@
     display: block;
     right: 5px;
     top: 0px; */
-    position:relative;
+
+
+    position:absolute;
     cursor: pointer;
     width: 12px;
     height: 12px;
+    top: 0px;
+    right: 5px;
 }
 :host #iconWrapper iron-icon {
-    position: absolute;
-    display: block;
-    right: 5px;
-    top: 0px; 
 	width: 12px;
 	height: 12px;
 }

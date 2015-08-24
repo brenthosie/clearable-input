@@ -16,7 +16,7 @@
 	
 	<template>		
 		<span class="wrapper">
-            <input type="text" id="textInput" placeholder="{{placeholder}}" value="{{value::input}}" on-click="fireClicked" on-input="_valueChanged"/>
+            <input type="text" id="textInput" placeholder$="{{placeholder}}" value$="{{value::input}}" on-click="fireClicked" on-input="_valueChanged"/>
             <div id="iconWrapper" hidden$="{{_isClearHidden}}">
             	<iron-icon id="clearInput" icon="{{icon}}" on-click="_testClearInput"></iron-icon>
             <div>
